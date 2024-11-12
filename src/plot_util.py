@@ -49,13 +49,13 @@ def _standard_scale_hash(hashed_features):
     x_norm = (hashed_features - mean_) / (std_)
     return x_norm
 
-def scatter_plot(data, target_str, scaled=False):
+def scatter_plot(data, target_str, scaled=False, use_limits=False):
     x, y = _hash_dataset(data, target_str) # obtain the x and y values
 
     if scaled:
         x = _standard_scale_hash(x)
 
-    x_min, x_max = x.min(), x.max()
+    x_min, x_max = (np.min(x), np.max(x)) if use_limits else (0, 30)
     fig, ax = plt.subplots()
     ax.set_xlim(x_min, x_max)
     ax.set_box_aspect(1)
@@ -67,13 +67,15 @@ def scatter_plot(data, target_str, scaled=False):
     plt.show()
 
 
-def plot_reg(x_test, y_test, y_pred, scaled=False):
+def plot_reg(x_test, y_test, y_pred, scaled=False, use_limits=False):
     x = []
     if scaled:
         x = _standard_scale_hash(_hash_dataset(x_test))
     else:
         x = _hash_dataset(x_test)
-    x_min, x_max = x.min(), x.max()
+     # set axes ranges
+    x_min, x_max = (np.min(x_test), np.max(x_test)) if use_limits else (0, 30)
+    
     fig, ax = plt.subplots()
     ax.set_xlim(x_min, x_max)
     ax.set_box_aspect(1)
@@ -82,8 +84,26 @@ def plot_reg(x_test, y_test, y_pred, scaled=False):
     ax.plot(x, y_test, "-b", label="actual values")
     ax.plot(x, y_pred, "-r", label="predicted values")
     plt.legend(loc="upper left")
+    ax.set_title("Line plot of x vs y_true and y_pred")
     plt.show()
    
+def plot_true_vs_pred(y_test, y_pred, use_limits=False):
+    # set axes ranges
+    x_min, x_max = (np.min(y_test), np.max(y_test)) if use_limits else (0, 30)
+    y_min, y_max = (np.min(y_pred), np.max(y_pred)) if use_limits else (0, 30)
     
+    # set up figure
+    fig, ax = plt.subplots()
+    ax.set_xlim(x_min, x_max)
+    ax.set_ylim(y_min, y_max)
+    ax.set_title("Scatter plot of y_true vs y_pred")
+    ax.plot(y_test, y_pred, 'ob')
+    ax.set_ylabel("Predicted values")
+    ax.set_xlabel("Actual values")
+    plt.show()
+
+   
+
+
 
     
