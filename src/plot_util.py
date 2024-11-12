@@ -1,5 +1,4 @@
 import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
 
 
@@ -55,7 +54,7 @@ def scatter_plot(data, target_str, scaled=False, use_limits=False):
     if scaled:
         x = _standard_scale_hash(x)
 
-    x_min, x_max = (np.min(x), np.max(x)) if use_limits else (0, 30)
+    x_min, x_max = x.min(), x.max()
     fig, ax = plt.subplots()
     ax.set_xlim(x_min, x_max)
     ax.set_box_aspect(1)
@@ -67,39 +66,38 @@ def scatter_plot(data, target_str, scaled=False, use_limits=False):
     plt.show()
 
 
-def plot_reg(x_test, y_test, y_pred, scaled=False, use_limits=False):
+def plot_reg(x_test, y_test, y_pred, scaled=False):
     x = []
     if scaled:
         x = _standard_scale_hash(_hash_dataset(x_test))
     else:
         x = _hash_dataset(x_test)
-     # set axes ranges
-    x_min, x_max = (np.min(x_test), np.max(x_test)) if use_limits else (0, 30)
-    
+    x_min, x_max = x.min(), x.max()
     fig, ax = plt.subplots()
     ax.set_xlim(x_min, x_max)
     ax.set_box_aspect(1)
+    ax.set_title("Line plot of x against y_true and y_pred")
     ax.set_xlabel("Hashed feature values")
     ax.set_ylabel(f'target values')
     ax.plot(x, y_test, "-b", label="actual values")
     ax.plot(x, y_pred, "-r", label="predicted values")
     plt.legend(loc="upper left")
-    ax.set_title("Line plot of x vs y_true and y_pred")
     plt.show()
    
-def plot_true_vs_pred(y_test, y_pred, use_limits=False):
+def plot_true_vs_pred(y_test, y_pred):
     # set axes ranges
-    x_min, x_max = (np.min(y_test), np.max(y_test)) if use_limits else (0, 30)
-    y_min, y_max = (np.min(y_pred), np.max(y_pred)) if use_limits else (0, 30)
-    
+    x_min, x_max = min(y_test), max(y_test)
+    y_min, y_max = min(y_pred), max(y_pred)
+
     # set up figure
     fig, ax = plt.subplots()
     ax.set_xlim(x_min, x_max)
     ax.set_ylim(y_min, y_max)
-    ax.set_title("Scatter plot of y_true vs y_pred")
+
     ax.plot(y_test, y_pred, 'ob')
     ax.set_ylabel("Predicted values")
     ax.set_xlabel("Actual values")
+    
     plt.show()
 
    
