@@ -48,7 +48,7 @@ def _standard_scale_hash(hashed_features):
     x_norm = (hashed_features - mean_) / (std_)
     return x_norm
 
-def scatter_plot(data, target_str, scaled=False, use_limits=False):
+def scatter_plot(data, target_str, scaled=False):
     x, y = _hash_dataset(data, target_str) # obtain the x and y values
 
     if scaled:
@@ -84,10 +84,10 @@ def plot_reg(x_test, y_test, y_pred, scaled=False):
     plt.legend(loc="upper left")
     plt.show()
    
-def plot_true_vs_pred(y_test, y_pred):
+def plot_true_vs_pred(y_test, y_pred, use_limits=False):
     # set axes ranges
-    x_min, x_max = min(y_test), max(y_test)
-    y_min, y_max = min(y_pred), max(y_pred)
+    x_min, x_max = (min(y_test), max(y_test)) if use_limits else (0, 30) 
+    y_min, y_max = (min(y_pred), max(y_pred)) if use_limits else (0, 30) 
 
     # set up figure
     fig, ax = plt.subplots()
@@ -99,9 +99,5 @@ def plot_true_vs_pred(y_test, y_pred):
     ax.set_xlabel("Actual values")
     
     plt.show()
-
-   
-
-
 
     
